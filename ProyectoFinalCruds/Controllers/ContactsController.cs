@@ -1,16 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProyectoFinalCruds.Data;
 using ProyectoFinalCruds.Models;
-using System;
 
 namespace ProyectoFinalCruds.Controllers
 {
-    public class CustomersController : Controller
+    public class ContactsController : Controller
     {
-
         private readonly ApplicationDbContext _context;
 
-        public CustomersController(ApplicationDbContext context)
+        public ContactsController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -23,13 +21,13 @@ namespace ProyectoFinalCruds.Controllers
             int pageSize = 10;
             int pageNumber = page ?? 1;
 
-            var customers = _context.customers.OrderBy(c => c.CUSTOMER_ID);
+            var contacts = _context.contacts.OrderBy(c => c.CUSTOMER_ID);
 
-            var paginatedCustomers = customers.Skip((pageNumber - 1) * pageSize)
+            var paginatedCustomers = contacts.Skip((pageNumber - 1) * pageSize)
                                               .Take(pageSize)
                                               .ToList();
 
-            int totalCustomers = _context.customers.Count();
+            int totalCustomers = _context.contacts.Count();
             int totalPages = (int)Math.Ceiling((double)totalCustomers / pageSize);
 
             ViewBag.PageNumber = pageNumber;
@@ -46,13 +44,13 @@ namespace ProyectoFinalCruds.Controllers
                 return NotFound();
             }
 
-            var customer = _context.customers.FirstOrDefault(c => c.CUSTOMER_ID == id);
-            if (customer == null)
+            var contact = _context.contacts.FirstOrDefault(c => c.CONTACT_ID == id);
+            if (contact == null)
             {
                 return NotFound();
             }
 
-            return View(customer);
+            return View(contact);
         }
 
         // GET: CustomerController/Create
@@ -64,15 +62,15 @@ namespace ProyectoFinalCruds.Controllers
         // POST: CustomerController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Customers customers)
+        public ActionResult Create(Contacts contacts)
         {
             if (ModelState.IsValid)
             {
-                _context.customers.Add(customers);
+                _context.contacts.Add(contacts);
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
-            return View(customers);
+            return View(contacts);
         }
 
         // GET: CustomerController/Edit/5
@@ -82,18 +80,18 @@ namespace ProyectoFinalCruds.Controllers
             {
                 return NotFound();
             }
-            var cust = _context.customers.Find(id);
+            var cust = _context.contacts.Find(id);
             return View(cust);
         }
 
         // POST: CustomerController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Customers customer)
+        public ActionResult Edit(Contacts contact)
         {
             if (ModelState.IsValid)
             {
-                _context.customers.Update(customer);
+                _context.contacts.Update(contact);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -108,13 +106,13 @@ namespace ProyectoFinalCruds.Controllers
                 return NotFound();
             }
 
-            var customer = _context.customers.FirstOrDefault(c => c.CUSTOMER_ID == id);
-            if (customer == null)
+            var contact = _context.contacts.FirstOrDefault(c => c.CONTACT_ID == id);
+            if (contact == null)
             {
                 return NotFound();
             }
 
-            return View(customer);
+            return View(contact);
         }
 
         // POST: CustomerController/Delete/5
@@ -122,19 +120,16 @@ namespace ProyectoFinalCruds.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
-            var customer = _context.customers.Find(id);
-            if (customer == null)
+            var contact = _context.contacts.Find(id);
+            if (contact == null)
             {
                 return NotFound();
             }
 
-            _context.customers.Remove(customer);
+            _context.contacts.Remove(contact);
             _context.SaveChanges();
 
             return RedirectToAction(nameof(Index));
         }
-
-
-
     }
 }
