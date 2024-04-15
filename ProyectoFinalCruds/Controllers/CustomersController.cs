@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProyectoFinalCruds.Data;
 using ProyectoFinalCruds.Models;
+using System;
 
 namespace ProyectoFinalCruds.Controllers
 {
@@ -14,10 +15,27 @@ namespace ProyectoFinalCruds.Controllers
             _context = context;
         }
 
-        public ActionResult Index()
+
+
+
+public ActionResult Index(int? page)
         {
-            IEnumerable<Customers> listaCustomers = _context.customers;
-            return View(listaCustomers);
+            int pageSize = 10;
+            int pageNumber = page ?? 1;
+
+            var customers = _context.customers.OrderBy(c => c.CUSTOMER_ID);
+
+            var paginatedCustomers = customers.Skip((pageNumber - 1) * pageSize)
+                                              .Take(pageSize)
+                                              .ToList();
+
+            int totalCustomers = _context.customers.Count();
+            int totalPages = (int)Math.Ceiling((double)totalCustomers / pageSize);
+
+            ViewBag.PageNumber = pageNumber;
+            ViewBag.TotalPages = totalPages;
+
+            return View(paginatedCustomers);
         }
 
         // GET: CustomerController/Details/5
