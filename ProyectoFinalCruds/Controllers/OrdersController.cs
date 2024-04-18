@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using ProyectoFinalCruds.Data;
 using ProyectoFinalCruds.Models;
 
@@ -21,7 +23,9 @@ namespace ProyectoFinalCruds.Controllers
             int pageSize = 10;
             int pageNumber = page ?? 1;
 
-            var orders = _context.orders.OrderBy(c => c.ORDER_ID);
+            var orders = _context.orders
+                               .Include(o => o.Customer)
+                               .OrderBy(c => c.ORDER_ID);
 
             var paginatedorders = orders.Skip((pageNumber - 1) * pageSize)
                                               .Take(pageSize)
@@ -56,20 +60,39 @@ namespace ProyectoFinalCruds.Controllers
         // GET: CustomerController/Create
         public ActionResult Create()
         {
-            return View();
+            ViewBag.Customers = _context.customers
+                .Select(c => new SelectListItem
+                {
+                    Value = c.CUSTOMER_ID.ToString(),
+                    Text = c.NAME
+                })
+                .ToList();
+
+            return View(new Orders());
         }
 
-        // POST: CustomerController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Orders orders)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.orders.Add(orders);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _context.orders.Add(orders);
+                    _context.SaveChanges();
+                    Console.WriteLine("MODEL VALID ENABLED");
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex) { Console.WriteLine(ex.Message); }
             }
+            ViewBag.Customers = _context.customers
+                .Select(c => new SelectListItem
+                {
+                    Value = c.CUSTOMER_ID.ToString(),
+                    Text = c.NAME
+                })
+                .ToList();
             return View(orders);
         }
 

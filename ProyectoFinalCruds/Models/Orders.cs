@@ -15,9 +15,9 @@ namespace ProyectoFinalCruds.Models
         public int? SALESMAN_ID { get; set; }
         [JsonPropertyName("salesman_id")]
 
-        public DateTime? ORDER_DATE { get; set; } 
+        public DateTime? ORDER_DATE { get; set; }
 
-
+        public Customers Customer { get; set; }
 
     }
 }
