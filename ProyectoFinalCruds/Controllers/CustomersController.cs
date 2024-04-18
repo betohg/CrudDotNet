@@ -34,6 +34,7 @@ namespace ProyectoFinalCruds.Controllers
 
             ViewBag.PageNumber = pageNumber;
             ViewBag.TotalPages = totalPages;
+            ViewBag.Customers = _context.customers.ToList();
 
             return View(paginatedCustomers);
         }
