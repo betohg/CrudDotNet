@@ -16,6 +16,12 @@ namespace ProyectoFinalCruds.Data
         public DbSet<Products> products { get; set; }
         public DbSet<Product_Categories> product_categories { get; set; }
 
-        
+        public DbSet<Iventories> inventories { get; set; }
+
+        public DbSet<Warehouses> warehouses { get; set; }
+        public DbSet<Regions> regions { get; set; }
+        public DbSet<Countries> countries { get; set; }
+
+
     }
 }
