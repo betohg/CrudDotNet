@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProyectoFinalCruds.Data;
 using ProyectoFinalCruds.Models;
 
@@ -21,7 +22,9 @@ namespace ProyectoFinalCruds.Controllers
             int pageSize = 10;
             int pageNumber = page ?? 1;
 
-            var orders = _context.orders.OrderBy(c => c.ORDER_ID);
+            var orders = _context.orders
+                               .Include(o => o.Customer)
+                               .OrderBy(c => c.ORDER_ID);
 
             var paginatedorders = orders.Skip((pageNumber - 1) * pageSize)
                                               .Take(pageSize)
