@@ -12,7 +12,7 @@ namespace ProyectoFinalCruds.Data
 
         public DbSet<Customers> customers { get; set; }
         public DbSet<Contacts> contacts { get; set; }
-
+        public DbSet<Orders> orders { get; set; }
         ///public DbSet<Contacts> contacts { get; set; }
         ///public DbSet<Countries> countries { get; set; }
         ///public DbSet<Employees> employees { get; set; }
