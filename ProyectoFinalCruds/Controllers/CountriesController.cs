@@ -70,7 +70,7 @@ namespace ProyectoFinalCruds.Controllers
             return View(cust);
         }
 
-        // POST: CustomerController/Edit/5
+        // POST: CustomerController/Edit/
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Countries countries)
